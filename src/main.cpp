@@ -45,29 +45,36 @@ void water_watchdog() {
   uint pump_ctr = 0;
   
   while (true) {
+    Serial.println("Checking Reservoir Water Level");
     if (!check_water_level_reservoir()) {
       beep_low_reservoir_level();
     }
     
+    Serial.println("Checking Tree Water Level");
     if (!check_water_level_tree()) {
-      pump_ctr += 1;
       
       // try to pump water up to three times
-      if (pump_ctr <= 3) {
+      if (pump_ctr < 3) {
+        Serial.println("Pump Water");
         pump_water();
+        pump_ctr += 1;
       } else { // panic if still low water-level, despite pumping
+        Serial.println("PAaaaaaaaaaaanic");
         beep_panic();
       }
 
     } else {
       pump_ctr = 0;
+      Serial.println("Reset Ctr");
     }
     
+    Serial.println("Sleep for 3 seconds");
     delay(3000);
   }
 }
 
 void setup() {
+  Serial.begin(115200);
   setup_gpio();
   calibration();
   beep_startup();
