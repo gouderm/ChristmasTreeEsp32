@@ -4,7 +4,7 @@
 bool check_water_level(int GPIO_sensor, int GPIO_ref) {
   // returns 1 if water between GPIO_sensor and GIPO_ref
   digitalWrite(GPIO_ref, HIGH);
-  delayMicroseconds(10);
+  delayMicroseconds(100);
   auto ret = digitalRead(GPIO_sensor);
   digitalWrite(GPIO_ref, LOW);
   return ret;
